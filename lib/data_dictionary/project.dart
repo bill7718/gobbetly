@@ -39,6 +39,9 @@ class Project  implements DataObject {
   @override
   get id =>_data[idLabel];
 
+  @override
+  get entityType => 'Project';
+
   /// a one line description of the project
   get description => _data[descriptionLabel];
 
@@ -56,7 +59,11 @@ class Project  implements DataObject {
 
   /// the date time on which this project was first created
   get createdDate => DateTime.parse(_data[createdDateLabel]);
+
+  /// the date time on which this project was last updated
   get lastUpdateDate => DateTime.parse(_data[lastUpdateDateLabel]);
+
+  /// the date time on which this project was completed. Null if the project is not complete
   DateTime get completedDate  {
     if (_data[completedDateLabel] == null) {
       return null;
@@ -64,10 +71,16 @@ class Project  implements DataObject {
     return DateTime.parse(_data[completedDateLabel]);
   }
 
-  /// the
-  int get status => _data[statusLabel];
+  /// the status of the project
+  /// 0 or null - incomplete
+  /// 2 - complete
+  int get status {
+    if (_data[statusLabel] == null) {
+      return 0;
+    }
+    return _data[statusLabel];
+  }
   set status(int st) {
-
     if (st != 0 && st != 2 ) {
       throw Exception(
           'invalid project status ' + st.toString() + ' for project ' + description);
@@ -77,7 +90,7 @@ class Project  implements DataObject {
     if (status != st) {
       _data[statusLabel] = st;
 
-      if (st == 'DONE') {
+      if (st == 2) {
         _data[completedDateLabel] = new DateTime.now().toIso8601String();
       } else {
         _data[completedDateLabel] = null;
@@ -87,16 +100,16 @@ class Project  implements DataObject {
     }
   }
 
-  get priority => _data[priorityLabel];
-  set priority(String pr) {
-    if (pr == null) {
-      throw Exception(
-          'cannot set project priority to null for project ' + description);
-    }
+  /// the prioroty of the project
+  /// 0 or null - normal
+  /// 1 - high
+  /// 2 - very high
+  int get priority => _data[priorityLabel];
+  set priority(int pr) {
 
-    if (!priorityValues.contains(pr)) {
+    if (pr < 0 || pr > 2) {
       throw Exception(
-          'invalid project priority ' + pr + ' for project ' + description);
+          'invalid project priority ' + pr.toString() + ' for project ' + description);
     }
 
     if (priority != pr) {
@@ -105,6 +118,7 @@ class Project  implements DataObject {
     }
   }
 
+  /// the earliest date on which any work on this project should be done
   DateTime get startDate  {
     if (_data[startDateLabel] == null) {
       return null;
@@ -121,17 +135,11 @@ class Project  implements DataObject {
       return;
     }
 
-    if (startDate == null) {
-      DateTime ds = DateTime(d.year, d.month, d.day);
-      _data[startDateLabel] = ds.toIso8601String();
-      setLastUpdate();
-      return;
-    }
-
-    if ((startDate.year != d.year || startDate.month != d.month || startDate.day != d.day) ) {
-      DateTime ds = DateTime(d.year, d.month, d.day);
-      _data[startDateLabel] = ds.toIso8601String();
-      setLastUpdate();
+    if (d != null) {
+      if (d.millisecondsSinceEpoch != startDate.millisecondsSinceEpoch) {
+        _data[startDateLabel] = d.toIso8601String();
+        setLastUpdate();
+      }
     }
   }
 
@@ -142,6 +150,5 @@ class Project  implements DataObject {
 
 
 
-  @override
-  get entityType => 'Project';
+
 }
