@@ -25,6 +25,8 @@ class TodoListComponent implements OnInit {
   List<String> items = [];
   String newTodo = '';
 
+  String username = '';
+
   TodoListComponent(this.todoListService);
 
   @override
@@ -38,4 +40,8 @@ class TodoListComponent implements OnInit {
   }
 
   String remove(int index) => items.removeAt(index);
+
+  void signin() {
+    todoListService.signin();
+  }
 }
