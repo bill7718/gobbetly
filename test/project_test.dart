@@ -115,7 +115,7 @@ void main() {
   });
 
 
-  test("when I set a project status to 2 it trests it as null", () {
+  test("when I set a project status to 2 it sets the completed date", () {
 
     Project p = new Project();
     expect(p.status == 0, true);
