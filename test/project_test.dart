@@ -126,4 +126,72 @@ void main() {
     expect(p.createdDate == p.lastUpdateDate, true);
     expect(p.status == 2, true);
   });
+
+  test("when I set a project status to 1 it throws an exception", () {
+
+    Project p = new Project();
+    try {
+      p.status  = 1;
+      expect(true, false);
+    } catch (ex) {
+      expect(ex.runtimeType.toString() == 'ProjectException', true);
+      expect(ex.toString().contains('status'), true);
+    }
+  });
+
+  test("when I set a project status to 3 it throws an exception", () {
+
+    Project p = new Project();
+    try {
+      p.status  = 3;
+      expect(true, false);
+    } catch (ex) {
+      expect(ex.runtimeType.toString() == 'ProjectException', true);
+      expect(ex.toString().contains('status'), true);
+    }
+  });
+
+  test("when I set a project priority to null it returns as 0", () {
+
+    Project p = new Project();
+    expect(p.priority == 0, true);
+    expect(p.createdDate == p.lastUpdateDate, true);
+    p.priority = null;
+    expect(p.createdDate == p.lastUpdateDate, true);
+    expect(p.priority == 0, true);
+  });
+
+  test("when I set a project priority to 0 it sets it as null", () {
+
+    Project p = new Project();
+    expect(p.priority == 0, true);
+    expect(p.createdDate == p.lastUpdateDate, true);
+    p.priority = 0;
+    expect(p.createdDate == p.lastUpdateDate, true);
+    expect(p.priority == 0, true);
+  });
+
+  test("when I set a project priority to -1 it throws an exception", () {
+
+    Project p = new Project();
+    try {
+      p.priority  = -1;
+      expect(true, false);
+    } catch (ex) {
+      expect(ex.runtimeType.toString() == 'ProjectException', true);
+      expect(ex.toString().contains('priority'), true);
+    }
+  });
+
+  test("when I set a project priority to 3 it throws an exception", () {
+
+    Project p = new Project();
+    try {
+      p.priority  = 3;
+      expect(true, false);
+    } catch (ex) {
+      expect(ex.runtimeType.toString() == 'ProjectException', true);
+      expect(ex.toString().contains('priority'), true);
+    }
+  });
 }

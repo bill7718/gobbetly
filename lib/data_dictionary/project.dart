@@ -122,14 +122,19 @@ class Project implements DataObject {
   }
 
   set priority(int pr) {
-    if (pr < 0 || pr > 2) {
-      throw Exception('invalid project priority ' +
+
+    if (pr == 0) {
+      pr = null;
+    }
+
+    if (pr != null && (pr < 1 || pr > 2)) {
+      throw ProjectException('invalid project priority ' +
           pr.toString() +
           ' for project ' +
           description);
     }
 
-    if (priority != pr) {
+    if (_data[priorityLabel] != pr) {
       _data[priorityLabel] = pr;
       setLastUpdate();
     }
