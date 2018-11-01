@@ -121,9 +121,13 @@ void main() {
     expect(p.status == 0, true);
     expect(p.createdDate == p.lastUpdateDate, true);
     expect(p.completedDate == null, true);
+    int i = 0;
+    while (i < 100000) {
+      i++;
+    }
     p.status = 2;
     expect(p.completedDate == null, false);
-    expect(p.createdDate == p.lastUpdateDate, true);
+    expect(p.createdDate == p.lastUpdateDate, false);
     expect(p.status == 2, true);
   });
 
@@ -193,5 +197,31 @@ void main() {
       expect(ex.runtimeType.toString() == 'ProjectException', true);
       expect(ex.toString().contains('priority'), true);
     }
+  });
+
+  test("when I set a project priority to 2 it sets the last update date", () {
+    Project p = new Project();
+    expect(p.priority == 0, true);
+    expect(p.createdDate == p.lastUpdateDate, true);
+    int i = 0;
+    while (i < 100000) {
+      i++;
+    }
+    p.priority = 2;
+    expect(p.createdDate == p.lastUpdateDate, false);
+    expect(p.priority == 2, true);
+  });
+
+  test("when I set a project start date it sets the last update date", () {
+    Project p = new Project();
+    expect(p.startDate == null, true);
+    expect(p.createdDate == p.lastUpdateDate, true);
+    int i = 0;
+    while (i < 100000) {
+      i++;
+    }
+    p.startDate = DateTime.now();
+    expect(p.createdDate == p.lastUpdateDate, false);
+    expect(p.startDate == null, false);
   });
 }

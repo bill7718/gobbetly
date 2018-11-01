@@ -89,10 +89,16 @@ class Project implements DataObject {
     }
 
     if (st != null && st != 2) {
-      throw ProjectException('invalid project status ' +
+      String message = 'invalid project status ' +
           st.toString() +
-          ' for project ' +
-          description);
+          ' for project ';
+      if (description == null) {
+        message = message + 'null';
+      } else {
+        message = message + description;
+      }
+
+      throw ProjectException(message);
     }
 
 
@@ -128,10 +134,18 @@ class Project implements DataObject {
     }
 
     if (pr != null && (pr < 1 || pr > 2)) {
-      throw ProjectException('invalid project priority ' +
+
+      String message = 'invalid project priority ' +
           pr.toString() +
-          ' for project ' +
-          description);
+          ' for project ';
+      if (description == null) {
+        message = message + 'null';
+      } else {
+        message = message + description;
+      }
+
+      throw ProjectException(message);
+
     }
 
     if (_data[priorityLabel] != pr) {
@@ -158,10 +172,16 @@ class Project implements DataObject {
     }
 
     if (d != null) {
-      if (d.millisecondsSinceEpoch != startDate.millisecondsSinceEpoch) {
+      if (startDate == null) {
         _data[startDateLabel] = d.toIso8601String();
         setLastUpdate();
+      } else {
+        if (d.millisecondsSinceEpoch != startDate.millisecondsSinceEpoch) {
+          _data[startDateLabel] = d.toIso8601String();
+          setLastUpdate();
+        }
       }
+
     }
   }
 
