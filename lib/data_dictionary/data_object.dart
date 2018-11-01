@@ -17,7 +17,7 @@ abstract class DataObject {
 
   /// returns a unique id which can be allocated to an object
   static int getId() {
-    return (10000 * DateTime.now().millisecondsSinceEpoch) + random.nextInt(9999);
+    return (1000 * DateTime.now().millisecondsSinceEpoch) + random.nextInt(999);
   }
 
 }
